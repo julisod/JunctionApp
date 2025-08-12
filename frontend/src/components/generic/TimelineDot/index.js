@@ -1,28 +1,36 @@
 import React from 'react'
 import CheckIcon from '@mui/icons-material/Check'
-import clsx from 'clsx'
+import { Box } from '@mui/material'
 
 const TimelineDot = ({ active, completed, accentColor }) => {
-    const dotClass = clsx(
-        'w-3.5 h-3.5 border rounded-full flex items-center justify-center',
-        {
-            'border-current bg-transparent': active,
-            'bg-current border-gray-300': !active,
-        },
-    )
-
-    const dotStyle = active
-        ? { borderColor: accentColor || '#19DDEA' }
-        : { backgroundColor: accentColor || '#19DDEA' }
-
     return (
-        <div className="w-3.5 h-3.5 flex items-center justify-center m-0">
+        <Box
+            sx={{
+                width: '14px',
+                height: '14px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+            }}
+        >
             {completed ? (
                 <CheckIcon color="primary" fontSize="small" />
             ) : (
-                <div className={dotClass} style={dotStyle} />
+                <Box
+                    sx={{
+                        width: '14px',
+                        height: '14px',
+                        borderStyle: 'solid',
+                        borderRadius: '50%',
+                        borderColor: active ? accentColor || '#19DDEA' : '#ccc',
+                        backgroundColor: active
+                            ? 'transparent'
+                            : accentColor || '#19DDEA',
+                        borderWidth: '1px',
+                    }}
+                />
             )}
-        </div>
+        </Box>
     )
 }
 

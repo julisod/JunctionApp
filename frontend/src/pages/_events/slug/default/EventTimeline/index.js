@@ -1,83 +1,25 @@
 import React, { useMemo } from 'react'
-import PropTypes from 'prop-types'
-import { withStyles } from '@mui/material/styles'
 import {
     Stepper,
     Step,
+    StepConnector,
     StepLabel,
     StepContent,
     Typography,
 } from '@mui/material'
-import { sortBy } from 'lodash-es'
-import moment from 'moment'
-// import MiscUtils from 'utils/misc'
-import TimelineDot from 'components/generic/TimelineDot'
-import StepConnector from '@mui/material/StepConnector'
 import { styled } from '@mui/system'
 
-const useStyles = styled(theme => ({
-    root: {
-        background: 'transparent',
-    },
-    borderContent: {
-        borderColor: props => props.accentColor || '#19DDEA',
-        paddingTop: '8px',
-        marginTop: '-9px',
-        marginLeft: '6px',
-        textTransform: 'uppercase',
-        color: props => props.textColor,
-    },
-    date: {
-        fontWeight: 'bold',
-        paddingTop: '2px',
-        fontSize: '18px',
-    },
-    label: {
-        marginTop: '-9px',
-        '& .MuiStepLabel-label': {
-            color: props => props.textColor,
-            opacity: 0.54,
-        },
-        '& .MuiStepLabel-active': {
-            opacity: 0.87,
-        },
-    },
-}))
+import { sortBy } from 'lodash-es'
+import moment from 'moment'
+import TimelineDot from 'components/generic/TimelineDot'
 
-const colorLibStyle = props => ({
-    root: {
-        marginLeft: '6px',
-        paddingBottom: 0,
-    },
-    active: {
-        '& $line': {
-            borderColor: props => props.accent || '#784af4',
-        },
-    },
-    completed: {
-        '& $line': {
-            borderColor: props => props.accent || '#784af4',
-        },
-    },
-    line: {
-        borderColor: props => props.accent || '#19DDEA',
-
-        borderRadius: 1,
-    },
-    lineVertical: {
-        borderColor: props => props.accent || '#19DDEA',
-        padding: 0,
-
-        borderRadius: 1,
+const StyledLine = styled(StepConnector)({
+    marginLeft: '6px',
+    '& .MuiStepConnector-line': {
+        borderColor: '#19DDEA',
     },
 })
 
-const ColorlibConnector = styled(StepConnector)(colorLibStyle())
-
-ColorlibConnector.propTypes = {
-    ...ColorlibConnector.propTypes,
-    accent: PropTypes.string,
-}
 function differentYear(event) {
     const currentYear = moment()
     return (
@@ -90,7 +32,6 @@ function differentYear(event) {
     )
 }
 const EventTimeline = ({ event, textColor, accentColor = undefined }) => {
-    const classes = useStyles({ accentColor, textColor })
     const dateString = differentYear(event) ? 'MMM D YYYY' : 'MMM D HH:mm'
     const timelineItems = useMemo(() => {
         const realItems = event.eventTimeline.items.map(item => {
@@ -179,10 +120,9 @@ const EventTimeline = ({ event, textColor, accentColor = undefined }) => {
 
     return (
         <Stepper
-            className={classes.root}
             activeStep={0}
             orientation="vertical"
-            connector={<ColorlibConnector accent={accentColor} />}
+            connector={<StyledLine />}
         >
             {timelineItems.map(item => (
                 <Step
@@ -195,13 +135,17 @@ const EventTimeline = ({ event, textColor, accentColor = undefined }) => {
                         StepIconComponent={props => (
                             <TimelineDot {...props} accentColor={accentColor} />
                         )}
-                        className="font-bold"
+                        sx={{ padding: '0.2rem 0' }}
                     >
-                        <Typography variant="button" className={classes.date}>
+                        <Typography
+                            sx={{ fontWeight: 'bold', fontSize: '1.125rem' }}
+                        >
                             {item.date}
                         </Typography>
                     </StepLabel>
-                    <StepContent className={classes.borderContent}>
+                    <StepContent
+                        sx={{ borderColor: '#19DDEA', marginLeft: '6px' }}
+                    >
                         <Typography variant="subtitle2">
                             {item.title}
                         </Typography>
