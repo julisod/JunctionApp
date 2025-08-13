@@ -114,8 +114,6 @@ const EventTimeline = ({ event, textColor, accentColor = undefined }) => {
         event.registrationEndTime,
         event.registrationStartTime,
         event.startTime,
-        event.submissionStartTime,
-        event.reviewStartTime,
     ])
 
     return (
